@@ -8,31 +8,31 @@ app.tsp = app.tsp || {};
 app.tsp.PathManager = function (initialPoints) {
     'use strict';
 
-    // Aqui vamos guardar as distâncias já calculadas
-    this.distances = {};
+    // Aqui vamos guardar os custos já calculados
+    this.costs = {};
 
     this.pointToCity = function (point) {
 
-        point.distanceTo = function (otherPoint) {
+        point.costTo = function (otherPoint) {
 
             // Verificar se já temos a distância calculada em cache
-            if (this.distances[point.toString() + "_" + otherPoint.toString()]) {
-                return this.distances[point.toString() + "_" + otherPoint.toString()];
+            if (this.costs[point.toString() + "_" + otherPoint.toString()]) {
+                return this.costs[point.toString() + "_" + otherPoint.toString()];
             }
 
-            if (this.distances[otherPoint.toString() + "_" + point.toString()]) {
-                return this.distances[otherPoint.toString() + "_" + point.toString()];
+            if (this.costs[otherPoint.toString() + "_" + point.toString()]) {
+                return this.costs[otherPoint.toString() + "_" + point.toString()];
             }
 
             // Calcular a distância
             var xDistance = Math.abs(point.x - otherPoint.x),
                 yDistance = Math.abs(point.y - otherPoint.y),
-                distance = (xDistance * xDistance) + (yDistance * yDistance);
+                cost = (xDistance * xDistance) + (yDistance * yDistance);
 
             // Guardar o cálculo da distância
-            this.distances[this.toString() + "_" + otherPoint.toString()] = distance;
+            this.costs[this.toString() + "_" + otherPoint.toString()] = cost;
 
-            return distance;
+            return cost;
         }.bind(this);
 
         point.toString = function () {
@@ -64,7 +64,7 @@ app.tsp.Tour = function (routeManager) {
     'use strict';
 
     this.tour = [];
-    this.distance = 0;
+    this.cost = 0;
 
 
     this.setCities = function (cities) {
@@ -85,17 +85,17 @@ app.tsp.Tour = function (routeManager) {
 
     this.setCity = function (routePosition, city) {
         this.tour[routePosition] = city;
-        // Reiniciar a distância visto que estamos a modificar a rota
-        this.distance = 0;
+        // Reiniciar o custo visto que estamos a modificar a rota
+        this.cost = 0;
     };
 
 
-    this.getDistance = function () {
-        if (this.distance === 0) {
-            var routeDistance = 0,
+    this.getCost = function () {
+        if (this.cost === 0) {
+            var routeCost = 0,
                 idx;
 
-            // Passar por todas as cidades e somar a distância
+            // Passar por todas as cidades e somar o custo
             for (idx = 0; idx < this.tourSize(); idx++) {
                 // A cidade de partida
                 var fromCity = this.getCity(idx),
@@ -109,12 +109,12 @@ app.tsp.Tour = function (routeManager) {
                 else {
                     destinationCity = this.getCity(0);
                 }
-                // Somar à distância acumulada, a distância entre as duas cidades
-                routeDistance += fromCity.distanceTo(destinationCity);
+                // adicionar ao custo acumulado, custo  entre as duas cidades
+                routeCost += fromCity.costTo(destinationCity);
             }
-            this.distance = routeDistance;
+            this.cost = routeCost;
         }
-        return this.distance;
+        return this.cost;
     };
 
     this.tourSize = function () {

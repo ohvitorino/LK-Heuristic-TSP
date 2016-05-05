@@ -17,7 +17,7 @@ app.tsp.LinKernighan = function (pointSet) {
 
         tour.usingTourManagersPoints();
 
-        window.output.println("Distância Inicial: " + tour.getDistance());
+        window.output.println("Distância Inicial: " + tour.getCost());
 
         for (i = 0; i < tour.tourSize(); i++) {
 
@@ -37,13 +37,13 @@ app.tsp.LinKernighan = function (pointSet) {
                 newTour.setCity(i, cityJ);
 
                 // Decidir se aceitamos a solução vizinha
-                if (tour.getDistance() > newTour.getDistance()) {
+                if (tour.getCost() > newTour.getCost()) {
                     tour = newTour;
                 }
             }
         }
 
-        window.output.println("Distância Final: " + tour.getDistance());
+        window.output.println("Distância Final: " + tour.getCost());
 
         return tour;
 
