@@ -11,27 +11,32 @@ app.tsp.LinKernighan = function (pointSet) {
     this.tourManager = new app.tsp.PathManager(pointSet);
 
     this.solve = function () {
-        var tour = (new app.tsp.PathCreator(this.tourManager)).usingTourManagersPoints(),
+        var tour = new app.tsp.Tour(this.tourManager),
             i,
             j;
 
+        tour.usingTourManagersPoints();
+
         window.output.println("Distância Inicial: " + tour.getDistance());
 
-        for (i = 0; i < tour.tourSize(); i += 1) {
-            // Do the city swapping
-            for (j = i; j < tour.tourSize(); j += 1) {
+        for (i = 0; i < tour.tourSize(); i++) {
+
+            for (j = i; j < tour.tourSize(); j++) {
                 if (j === i) {
                     continue;
                 }
 
-                var newTour = new app.tsp.PathCreator(this.tourManager);
+                var newTour = new app.tsp.Tour(this.tourManager);
                 newTour.setCities(tour.tour);
 
                 // Trocar duas cidades
-                newTour.setCity(j, newTour.getCity(i));
-                newTour.setCity(i, newTour.getCity(j));
+                var cityI = newTour.getCity(i),
+                    cityJ = newTour.getCity(j);
 
-                // Decide if we should accept the neighbour
+                newTour.setCity(j, cityI);
+                newTour.setCity(i, cityJ);
+
+                // Decidir se aceitamos a solução vizinha
                 if (tour.getDistance() > newTour.getDistance()) {
                     tour = newTour;
                 }
@@ -40,7 +45,7 @@ app.tsp.LinKernighan = function (pointSet) {
 
         window.output.println("Distância Final: " + tour.getDistance());
 
-        return tour.tour;
+        return tour;
 
     }
 };

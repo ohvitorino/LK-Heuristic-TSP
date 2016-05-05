@@ -8,11 +8,14 @@ app.tsp = app.tsp || {};
 app.tsp.PathManager = function (initialPoints) {
     'use strict';
 
+    // Aqui vamos guardar as distâncias já calculadas
     this.distances = {};
 
     this.pointToCity = function (point) {
 
         point.distanceTo = function (otherPoint) {
+
+            // Verificar se já temos a distância calculada em cache
             if (this.distances[point.toString() + "_" + otherPoint.toString()]) {
                 return this.distances[point.toString() + "_" + otherPoint.toString()];
             }
@@ -21,16 +24,19 @@ app.tsp.PathManager = function (initialPoints) {
                 return this.distances[otherPoint.toString() + "_" + point.toString()];
             }
 
+            // Calcular a distância
             var xDistance = Math.abs(point.x - otherPoint.x),
                 yDistance = Math.abs(point.y - otherPoint.y),
                 distance = (xDistance * xDistance) + (yDistance * yDistance);
 
+            // Guardar o cálculo da distância
             this.distances[this.toString() + "_" + otherPoint.toString()] = distance;
+
             return distance;
         }.bind(this);
 
         point.toString = function () {
-            return "(" + point.x + "/" + point.y + ")";
+            return point.name + ":(" + point.x + "," + point.y + ")";
         };
 
         return point;
@@ -51,14 +57,10 @@ app.tsp.PathManager = function (initialPoints) {
         return t.destinationCities[index];
     };
 
-    t.numberOfCities = function () {
-        return t.destinationCities.length;
-    };
-
     return t;
 };
 
-app.tsp.PathCreator = function (routeManager) {
+app.tsp.Tour = function (routeManager) {
     'use strict';
 
     this.tour = [];
@@ -94,7 +96,7 @@ app.tsp.PathCreator = function (routeManager) {
                 idx;
 
             // Passar por todas as cidades e somar a distância
-            for (idx = 0; idx < this.tourSize(); idx += 1) {
+            for (idx = 0; idx < this.tourSize(); idx++) {
                 // A cidade de partida
                 var fromCity = this.getCity(idx),
                 // A cidade de destino
@@ -107,7 +109,7 @@ app.tsp.PathCreator = function (routeManager) {
                 else {
                     destinationCity = this.getCity(0);
                 }
-                // Acumular a distância entre as duas cidades
+                // Somar à distância acumulada, a distância entre as duas cidades
                 routeDistance += fromCity.distanceTo(destinationCity);
             }
             this.distance = routeDistance;
@@ -132,7 +134,7 @@ app.tsp.PathCreator = function (routeManager) {
 
 };
 
-app.drawEdges = function (points, string) {
+app.drawEdges = function (points) {
     'use strict';
     var canvasHeight = 300, canvasWidth = 300;
 
@@ -154,9 +156,6 @@ app.drawEdges = function (points, string) {
 
     context.closePath();
     context.stroke();
-    context.fillStyle = '#000';
-    context.textBaseline = 'bottom';
-    context.fillText(string, 10, 250);
 
     // Desenhar os pontos para marcar as cidades
     $(points).each(function (index, point) {
