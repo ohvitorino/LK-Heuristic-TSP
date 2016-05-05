@@ -149,12 +149,13 @@ app.drawEdges = function (points) {
 
     context.beginPath();
 
-    context.moveTo(points[points.length - 1].x, points[points.length - 1].y);
+    context.moveTo(points[0].x, points[0].y);
+
     $(points).each(function (index, point) {
         context.lineTo(point.x, point.y);
     });
 
-    context.closePath();
+    // context.closePath();
     context.stroke();
 
     // Desenhar os pontos para marcar as cidades
