@@ -17,7 +17,7 @@ app.tsp.LinKernighan = function (pointSet) {
 
         tour.usingTourManagersPoints();
 
-        window.output.println("Distância Inicial: " + tour.getCost());
+        window.output.println("Custo Inicial: " + tour.getCost());
 
         for (i = 0; i < tour.tourSize(); i++) {
 
@@ -43,7 +43,7 @@ app.tsp.LinKernighan = function (pointSet) {
             }
         }
 
-        window.output.println("Distância Final: " + tour.getCost());
+        window.output.println("Custo Final: " + tour.getCost());
 
         return tour;
 
