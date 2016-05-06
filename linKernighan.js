@@ -5,10 +5,10 @@
 var app = app || {};
 app.tsp = app.tsp || {};
 
-app.tsp.LinKernighan = function (pointSet) {
+app.tsp.LinKernighan = function (nodes) {
     'use strict';
 
-    this.tourManager = new app.tsp.PathManager(pointSet);
+    this.tourManager = new app.tsp.PathManager(nodes);
 
     this.solve = function () {
         var tour = new app.tsp.Tour(this.tourManager),

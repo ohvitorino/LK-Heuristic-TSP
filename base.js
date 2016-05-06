@@ -5,7 +5,7 @@
 var app = app || {};
 app.tsp = app.tsp || {};
 
-app.tsp.PathManager = function (initialPoints) {
+app.tsp.PathManager = function (nodes) {
     'use strict';
 
     // Aqui vamos guardar os custos já calculados
@@ -38,7 +38,7 @@ app.tsp.PathManager = function (initialPoints) {
 
     // Converter os pontos em "objectos" City
     var t = {};
-    t.destinationCities = $(initialPoints).map(function (index, point) {
+    t.destinationCities = $(nodes).map(function (index, point) {
         return this.pointToCity(point);
     }.bind(this));
 
@@ -126,7 +126,7 @@ app.tsp.Tour = function (routeManager) {
 
 app.drawEdges = function (points) {
     'use strict';
-    var canvasHeight = 300, canvasWidth = 300;
+    var canvasHeight = 900, canvasWidth = 900;
 
     var context = $('<canvas></canvas>')
         .attr('height', canvasHeight)
@@ -167,3 +167,20 @@ app.output = function ($elem) {
         this.element.val(this.element.val() + '\n' + txt);
     };
 };
+
+app.generateRandomDeltaPath = function (size, min, max) {
+    var nodes = [];
+
+    for (var i = 0; i < size; i++) {
+        var valX = Math.floor(Math.random() * (max - min + 1) + min);
+        var valY = Math.floor(Math.random() * (max - min + 1) + min);
+        nodes.push({x: valX, y: valY, name: i});
+    }
+
+    // Para obter um d-path, temos de ter a ultima aresta ligada a um
+    // dos nós anteriores
+    var node = Math.floor(Math.random() * (size + 1));
+    nodes.push({x: nodes[node].x, y: nodes[node].y, name: node + "x"});
+
+    return nodes;
+}
