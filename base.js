@@ -11,26 +11,20 @@ app.tsp.PathManager = function (initialPoints) {
     // Aqui vamos guardar os custos já calculados
     this.costs = {};
 
+    /**
+     * Convert a object {x, y} to a City
+     */
     this.pointToCity = function (point) {
 
+        /**
+         * Calculate the cost between the current point and a given point
+         */
         point.costTo = function (otherPoint) {
-
-            // Verificar se já temos a distância calculada em cache
-            if (this.costs[point.toString() + "_" + otherPoint.toString()]) {
-                return this.costs[point.toString() + "_" + otherPoint.toString()];
-            }
-
-            if (this.costs[otherPoint.toString() + "_" + point.toString()]) {
-                return this.costs[otherPoint.toString() + "_" + point.toString()];
-            }
-
-            // Calcular a distância
-            var xDistance = Math.abs(point.x - otherPoint.x),
-                yDistance = Math.abs(point.y - otherPoint.y),
-                cost = (xDistance * xDistance) + (yDistance * yDistance);
-
-            // Guardar o cálculo da distância
-            this.costs[this.toString() + "_" + otherPoint.toString()] = cost;
+            // Calcular a distância utilizando o Teorema de Pitagoras
+            var cost = Math.ceil(Math.sqrt( (point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y) ));
+            // var xDistance = Math.abs(point.x - otherPoint.x),
+            //     yDistance = Math.abs(point.y - otherPoint.y),
+            //     cost = (xDistance * xDistance) + (yDistance * yDistance);
 
             return cost;
         }.bind(this);
@@ -42,8 +36,7 @@ app.tsp.PathManager = function (initialPoints) {
         return point;
     };
 
-
-    // Converter os pontos em "objectos" cidade
+    // Converter os pontos em "objectos" City
     var t = {};
     t.destinationCities = $(initialPoints).map(function (index, point) {
         return this.pointToCity(point);
@@ -66,7 +59,6 @@ app.tsp.Tour = function (routeManager) {
     this.tour = [];
     this.cost = 0;
 
-
     this.setCities = function (cities) {
         $(cities).each(function (index, city) {
             this.setCity(index, city);
@@ -88,7 +80,6 @@ app.tsp.Tour = function (routeManager) {
         // Reiniciar o custo visto que estamos a modificar a rota
         this.cost = 0;
     };
-
 
     this.getCost = function () {
         if (this.cost === 0) {
@@ -120,7 +111,6 @@ app.tsp.Tour = function (routeManager) {
     this.tourSize = function () {
         return this.tour.length;
     };
-
 
     this.toString = function () {
         var geneString = "|",

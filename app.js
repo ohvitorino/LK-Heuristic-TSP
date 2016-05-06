@@ -10,7 +10,9 @@ var points = [
     // {x: 50, y: 60, name: 'd'},
     // {x: 60, y: 70, name: 'e'},
     // {x: 40, y: 80, name: 'f'},
-    // {x: 50, y: 50, name: 'c'}
+    // {x: 50, y: 90, name: 'g'},
+    // {x: 70, y: 50, name: 'h'},
+    // {x: 100, y: 30, name: 'b2'}
 
     {x: 160, y: 20, name: 'a'},
     {x: 60, y: 20, name: 'b'},
