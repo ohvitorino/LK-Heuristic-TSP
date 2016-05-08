@@ -8,7 +8,7 @@ app.tsp = app.tsp || {};
 app.tsp.PathManager = function (nodes) {
     'use strict';
 
-    // Aqui vamos guardar os custos já calculados
+    // Here we're going to save all calculated costs
     this.costs = {};
 
     /**
@@ -20,13 +20,8 @@ app.tsp.PathManager = function (nodes) {
          * Calculate the cost between the current point and a given point
          */
         point.costTo = function (otherPoint) {
-            // Calcular a distância utilizando o Teorema de Pitagoras
-            var cost = Math.ceil(Math.sqrt( (point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y) ));
-            // var xDistance = Math.abs(point.x - otherPoint.x),
-            //     yDistance = Math.abs(point.y - otherPoint.y),
-            //     cost = (xDistance * xDistance) + (yDistance * yDistance);
-
-            return cost;
+            // Calculate distance using the pythagorean theorem
+            return cost = Math.ceil(Math.sqrt( (point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y) ));
         }.bind(this);
 
         point.toString = function () {
@@ -36,7 +31,7 @@ app.tsp.PathManager = function (nodes) {
         return point;
     };
 
-    // Converter os pontos em "objectos" City
+    // Convert nodes to City objects
     var t = {};
     t.destinationCities = $(nodes).map(function (index, point) {
         return this.pointToCity(point);
@@ -77,7 +72,7 @@ app.tsp.Tour = function (routeManager) {
 
     this.setCity = function (routePosition, city) {
         this.tour[routePosition] = city;
-        // Reiniciar o custo visto que estamos a modificar a rota
+        // Reset cost since the route is being modified
         this.cost = 0;
     };
 
@@ -86,21 +81,18 @@ app.tsp.Tour = function (routeManager) {
             var routeCost = 0,
                 idx;
 
-            // Passar por todas as cidades e somar o custo
+            // Loop through all cities and get total cost
             for (idx = 0; idx < this.tourSize(); idx++) {
-                // A cidade de partida
                 var fromCity = this.getCity(idx),
-                // A cidade de destino
                     destinationCity;
-                // Se estivermos na ultima cidade da tour, então devemos
-                // colocar a primeira cidade como cidade destino
+                // If we're at the last city, we need to set the first city as
+                // the destination city
                 if (idx + 1 < this.tourSize()) {
                     destinationCity = this.getCity(idx + 1);
                 }
                 else {
                     destinationCity = this.getCity(0);
                 }
-                // adicionar ao custo acumulado, custo  entre as duas cidades
                 routeCost += fromCity.costTo(destinationCity);
             }
             this.cost = routeCost;
@@ -148,7 +140,7 @@ app.drawEdges = function (points) {
     // context.closePath();
     context.stroke();
 
-    // Desenhar os pontos para marcar as cidades
+    // Draw the points that mark the cities
     $(points).each(function (index, point) {
         app.drawPoint(point.x, point.y, context);
     });

@@ -17,7 +17,7 @@ app.tsp.LinKernighan = function (nodes) {
 
         tour.usingTourManagersPoints();
 
-        window.output.println("Custo Inicial: " + tour.getCost());
+        window.output.println("Initial cost: " + tour.getCost());
 
         for (i = 0; i < tour.tourSize(); i++) {
 
@@ -29,21 +29,21 @@ app.tsp.LinKernighan = function (nodes) {
                 var newTour = new app.tsp.Tour(this.tourManager);
                 newTour.setCities(tour.tour);
 
-                // Trocar duas cidades
+                // Switch two cities
                 var cityI = newTour.getCity(i),
                     cityJ = newTour.getCity(j);
 
                 newTour.setCity(j, cityI);
                 newTour.setCity(i, cityJ);
 
-                // Decidir se aceitamos a solução vizinha
+                // Decide if the neighbour solution should be accepted
                 if (tour.getCost() > newTour.getCost()) {
                     tour = newTour;
                 }
             }
         }
 
-        window.output.println("Custo Final: " + tour.getCost());
+        window.output.println("Final cost: " + tour.getCost());
 
         return tour;
 

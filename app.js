@@ -38,7 +38,7 @@
 //
 // ];
 
-var nodes = app.generateRandomDeltaPath(100, 10, 800);
+var nodes = app.generateRandomDeltaPath(500, 10, 800);
 
 app.drawEdges(nodes);
 
@@ -47,6 +47,6 @@ var output = new app.output($('#output'));
 var lk = new app.tsp.LinKernighan(nodes);
 var finalTour = lk.solve();
 
-output.println("Tour final: " + finalTour.toString());
+output.println("Final Tour: " + finalTour.toString());
 
 app.drawEdges(finalTour.tour);
