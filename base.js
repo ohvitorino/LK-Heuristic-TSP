@@ -21,7 +21,7 @@ app.tsp.PathManager = function (nodes) {
          */
         point.costTo = function (otherPoint) {
             // Calculate distance using the pythagorean theorem
-            return cost = Math.ceil(Math.sqrt( (point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y) ));
+            return Math.ceil(Math.sqrt( (point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y) ));
         }.bind(this);
 
         point.toString = function () {
