@@ -21,7 +21,7 @@ app.tsp.PathManager = function (nodes) {
          */
         point.costTo = function (otherPoint) {
             // Calculate distance using the pythagorean theorem
-            return Math.ceil(Math.sqrt((point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y)));
+            return Math.ceil(Math.sqrt( (point.x - otherPoint.x) * (point.x - otherPoint.x) + (point.y - otherPoint.y) * (point.y - otherPoint.y) ));
         }.bind(this);
 
         point.toString = function () {
@@ -124,7 +124,7 @@ app.drawEdges = function (points) {
         .attr('height', canvasHeight)
         .attr('width', canvasWidth)
         .appendTo($('.target'))
-    [0]
+        [0]
         .getContext('2d');
 
     context.strokeStyle = '#000';
@@ -166,13 +166,13 @@ app.generateRandomDeltaPath = function (size, min, max) {
     for (var i = 0; i < size; i++) {
         var valX = Math.floor(Math.random() * (max - min + 1) + min);
         var valY = Math.floor(Math.random() * (max - min + 1) + min);
-        nodes.push({ x: valX, y: valY, name: i });
+        nodes.push({x: valX, y: valY, name: i});
     }
 
     // Para obter um d-path, temos de ter a ultima aresta ligada a um
     // dos nós anteriores
     var node = Math.floor(Math.random() * (size + 1));
-    nodes.push({ x: nodes[node].x, y: nodes[node].y, name: node + "x" });
+    nodes.push({x: nodes[node].x, y: nodes[node].y, name: node + "x"});
 
     return nodes;
 }
